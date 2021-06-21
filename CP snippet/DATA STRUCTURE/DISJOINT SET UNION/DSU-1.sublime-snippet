@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+struct DSU
+{
+    vector<int> DS;
+    DSU(int N)
+    {
+        DS.resize(N);
+        fill(DS.begin(),DS.end(),-1);
+    }
+    int find(int x)
+    {
+        if(DS[x] < 0)return x;
+        return DS[x] = find(DS[x]);
+    }
+    void join(int a, int b)
+    {
+        a = find(a);
+        b = find(b);
+        if(a == b)return;
+        if(DS[a] > DS[b])swap(a,b);
+        DS[a] += DS[b];
+        DS[b] = a;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__DISJOINT_SET_UNION</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

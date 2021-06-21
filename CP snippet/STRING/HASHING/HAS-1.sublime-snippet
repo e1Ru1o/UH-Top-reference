@@ -1,0 +1,191 @@
+<snippet>
+	<content><![CDATA[
+const int HASH_ALPHABET_MAX_VALUE = 300;
+const int HASH_SIZE = 1;
+
+struct HASH_RAND
+{
+    vector<ll> bas = {307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421};
+    vector<ll> mod = {7,9,21,33,87,93,97,103,123,181,207,223,241,271,289,297,321,349,363,403};
+    int sz;
+    HASH_RAND(int N)
+    {
+        assert(N >= 0 & N <= 20);
+        mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+        sz = N;
+        shuffle(bas.begin(),bas.end(),rng);
+        shuffle(mod.begin(),mod.end(),rng);
+        while(bas.size() > N)bas.pop_back();
+        while(mod.size() > N)mod.pop_back();
+        for(int i = 0 ; i < N ; i++)mod[i] += 1000000000;
+    }
+} random_hash(HASH_SIZE);
+
+struct HASH_POWER
+{
+    vector<vector<ll>> P;
+    int sz;
+    int K;
+    HASH_POWER()
+    {
+        sz = HASH_ALPHABET_MAX_VALUE, K = random_hash.sz;
+        P.resize(sz+1,vector<ll>(K));
+        for(int j = 0 ; j < K ; j++)
+        {
+            P[0][j] = 1;
+            for(int i = 0 ; i < sz ; i++)P[i+1][j] = P[i][j]*random_hash.bas[j]%random_hash.mod[j];
+        }
+    }
+    void update(int N)
+    {
+        if(N < sz)return;
+        P.resize(N+1,vector<ll>(K));
+        for(int i = sz ; i < N ; i++)
+        {
+            for(int j = 0 ; j < K ; j++)
+            {
+                P[i+1][j] = P[i][j]*random_hash.bas[j]%random_hash.mod[j];
+            }
+        }
+        sz = N;
+    }
+} hash_powers;
+
+struct HASH
+{
+    vector<ll> hs;
+    friend bool operator==(const HASH &h1, const HASH &h2)
+    {
+        for(int i = 0 ; i < h1.hs.size() ; i++)
+        {
+            if(h1.hs[i] != h2.hs[i])return false;
+        }
+        return true;
+    }
+    friend bool operator!=(const HASH &h1, const HASH &h2)
+    {
+        for(int i = 0 ; i < h1.hs.size() ; i++)
+        {
+            if(h1.hs[i] != h2.hs[i])return true;
+        }
+        return false;
+    }
+    friend bool operator<(const HASH &h1, const HASH &h2)
+    {
+        for(int i = 0 ; i < h1.hs.size() ; i++)
+        {
+            if(h1.hs[i] < h2.hs[i])return true;
+        }
+        return false;
+    }
+};
+
+template<typename T>
+HASH _HASHING(const T &s)
+{
+    int N = s.size(), K = random_hash.sz;
+    HASH hh;
+    hh.hs.resize(K);
+    for(int j = 0 ; j < K ; j++)
+    {
+        for(int i = 0 ; i < N ; i++)hh.hs[j] = (hh.hs[j]*random_hash.bas[j]+s[i])%random_hash.mod[j];
+    }
+    return hh;
+}
+
+template<typename T>
+HASH _RHASHING(const T &s)
+{
+    int N = s.size(), K = random_hash.sz;
+    HASH hh;
+    hh.hs.resize(K);
+    for(int j = 0 ; j < K ; j++)
+    {
+        for(int i = N-1 ; i >= 0 ; i--)hh.hs[j] = (hh.hs[j]*random_hash.bas[j]+s[i])%random_hash.mod[j];
+    }
+    return hh;
+}
+
+template<typename T>
+HASH _PHASHING(const T &s)
+{
+    int N = s.size(), K = random_hash.sz;
+    HASH hh;
+    hh.hs.resize(K);
+    for(int j = 0 ; j < K ; j++)
+    {
+        for(int i = 0 ; i < N ; i++)hh.hs[j] = (hh.hs[j]+hash_powers.P[s[i]][j])%random_hash.mod[j];
+    }
+    return hh;
+}
+
+template<typename T>
+struct HASHING
+{
+    vector<vector<ll>> H, rH, pH;
+    int N, K;
+    HASHING()
+    {
+    }
+    HASHING(const T &s)
+    {
+        set(s);
+    }
+    void set(const T &s)
+    {
+    	N = s.size();
+        K = random_hash.sz;
+        hash_powers.update(N);
+        H.shrink_to_fit();
+        rH.shrink_to_fit();
+        pH.shrink_to_fit();
+        H.resize(N+2,vector<ll>(K));
+        rH.resize(N+2,vector<ll>(K));
+        pH.resize(N+2,vector<ll>(K));
+        for(int j = 0 ; j < K ; j++)
+        {
+            for(int i = 0 ; i < N ; i++)H[i+1][j] = (H[i][j]*random_hash.bas[j]+s[i])%random_hash.mod[j];
+            for(int i = N-1 ; i >= 0 ; i--)rH[i+1][j] = (rH[i+2][j]*random_hash.bas[j]+s[i])%random_hash.mod[j];
+            for(int i = 0 ; i < N ; i++)pH[i+1][j] = (pH[i][j]+hash_powers.P[s[i]][j])%random_hash.mod[j];
+        }
+    }
+    HASH ha(int a, int b)
+    {
+        if(a > b)swap(a,b);
+        assert(a >= 0 && b < N);
+        HASH tp;
+        for(int j = 0 ; j < K ; j++)
+        {
+            tp.hs.push_back((H[b+1][j]+random_hash.mod[j]-H[a][j]*hash_powers.P[b-a+1][j]%random_hash.mod[j])%random_hash.mod[j]);
+        }
+        return tp;
+    }
+    HASH rha(int a, int b)
+    {
+        if(a > b)swap(a,b);
+        assert(a >= 0 && b < N);
+        HASH tp;
+        for(int j = 0 ; j < K ; j++)
+        {
+            tp.hs.push_back((H[a+1][j]+random_hash.mod[j]-H[b+2][j]*hash_powers.P[b-a+1][j]%random_hash.mod[j])%random_hash.mod[j]);
+        }
+        return tp;
+    }
+    HASH pha(int a, int b)
+    {
+        if(a > b)swap(a,b);
+        assert(a >= 0 && b < N);
+        HASH tp;
+        for(int j = 0 ; j < K ; j++)
+        {
+            tp.hs.push_back((H[b][j]+random_hash.mod[j]-H[a-1][j])%random_hash.mod[j]);
+        }
+        return tp;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__HASHING</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

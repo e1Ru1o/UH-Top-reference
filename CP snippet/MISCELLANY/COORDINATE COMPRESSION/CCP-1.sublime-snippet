@@ -1,0 +1,44 @@
+<snippet>
+	<content><![CDATA[
+struct COORDINATE_COMPRESSION
+{
+    vector<int> vect;
+
+    int size()
+    {
+        return vect.size();
+    }
+
+    void clear()
+    {
+        vect.clear();
+    }
+
+    void insert(int x)
+    {
+        vect.push_back(x);
+    }
+
+    void compress()
+    {
+        sort(vect.begin(), vect.end());
+        vect.resize(unique(vect.begin(), vect.end()) - vect.begin());
+    }
+
+    int get(int x)
+    {
+        return lower_bound(vect.begin(), vect.end(), x) - vect.begin();
+    }
+
+    int iget(int x)
+    {
+        assert(0 <= x && x < vect.size());
+        return vect[x];
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__COORDINATE_COMPRESSION</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

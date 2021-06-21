@@ -1,0 +1,18 @@
+<snippet>
+	<content><![CDATA[
+#ifdef LOCAL 
+#include "/media/brayand/BrayanD/debugger.h"
+#else
+#define db(...) false
+#define dbl(...) false
+#define dbg(...) false
+#define dbm(...) false
+#define dbs(...) false
+#define dbas(...) false
+#endif
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>debugger</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

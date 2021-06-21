@@ -1,0 +1,20 @@
+<snippet>
+	<content><![CDATA[
+vector<pair<ll,ll>> HARMONIC_SERIES_PARTITION(ll N)
+{
+    vector<pair<ll,ll>> res;
+    ll temp = 0;
+    for(ll i = 1, la ; i <= N ; i = la+1)
+    {
+        la = N/(N/i);
+        res.push_back({temp+1,la});
+        temp = la;
+    }
+    return res;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__HARMONIC_SERIES_PARTITION</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,92 @@
+Data Structure:
+-Treap
+-Splay Tree
+-Suffix Array (all)
+-Li Chao Tree (all)
+-Randomized Kd Tree
+-Hashing
+-RMQ (all)
+-Convex Hull Trick (all)
+-Mo's Algorithm
+-Heavy Light Decomposition
+-Order Statistic
+-Segment Tree (all)
+-Monotonic queue
+-Sqrt Descomposition
+-Misof Tree
+-DSU on Tree
+-Trie
+
+Graphs:
+-Bellman Ford
+-Floyd Warshall
+-Lower Common Ancestor
+-Strongly Connected Components
+-Gabow SCC
+-Biconnected Connected Components
+-Bridges and Articulation Points
+-Centroid Decomposition
+-2SAT
+-Kruskal
+-Prim
+-Dijkstra
+-Topological Sort
+-Euler Path
+-Dinic
+-Max Flow Min Cost
+-Hungarian
+-Hopcroft–Karp Bipartite Matching
+
+Dynamic Programming:
+-Divide and Conquer Optimizations
+-Knuth Optimizations
+-Convex Hull Trick (all)
+-SOS DP
+-Iterating over Submasks
+-Parametric Search
+
+String:
+-Hashing
+-Manacher
+-Suffix Array + LCP
+-KMP
+-Trie
+
+Number Theory:
+-Formulas (Number Catalan, Euler's Formula, Derangement)
+-Modular Inverse of N!
+-Modular Equations "A*X = B(mod M)"
+-Shank-Tonelli Algorithm "X^2 = B(mod M)"
+-Shank's Algorithm "A^X = B(mod M)"
+-Rabin-Miller
+-Pollard-Rho
+-Extended GCD
+-Modular Inverse
+-Chinese Remainder Theorem
+-Primitive Root
+-Euler Phi
+-Floyd’s Cycle-Finding Algorithm
+-Criba
+-Discrete Logarithm "A^X = B(MOD M)"
+-Discrete Root "X^K = B(mod M)"
+-Divisor Sigma
+-Linear Congruences
+-Mobius Mu
+
+Math:
+-Fast Fourier Transform
+-Number-Theoretic Transform
+-Gauss
+-Interpolation
+-Goldsection Search
+-Linear Recursion
+-Roots Newton
+-Simpson
+-Matrix Power
+
+************
+*Incomplete*
+************
+Geometry: 
+-Radial Sorting
+-Convex Hull

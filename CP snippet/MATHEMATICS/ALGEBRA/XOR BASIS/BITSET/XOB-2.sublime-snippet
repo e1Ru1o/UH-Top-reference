@@ -1,0 +1,49 @@
+<snippet>
+	<content><![CDATA[
+struct XOR_BASIS
+{
+    vector<bitset<__sz_bset>> basis;
+    int sz;
+    int D;
+
+    XOR_BASIS()
+    {
+        init(0);
+    }
+
+    XOR_BASIS(int n)
+    {
+        init(n);
+    }
+
+    void init(int n)
+    {
+        D = n;
+        sz = 0;
+        basis.clear();
+        basis.resize(D);
+    }
+
+    void insert(bitset<__sz_bset> mask)
+    {
+        for(int i = 0 ; i < D ; i++)
+        {
+            if(mask[i] == 0)continue;
+
+            if(basis[i].none())
+            {
+                basis[i] = mask;
+                sz++;
+                return;
+            }
+
+            mask ^= basis[i];
+        }
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>__XOR_BASIS_BITSET</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
