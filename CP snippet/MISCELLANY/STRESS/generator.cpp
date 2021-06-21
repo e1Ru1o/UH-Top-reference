@@ -18,9 +18,13 @@ bool fc()
 
     string s1, s2;
 
-    while(f1 >> s1)
+    while(1)
     {
-        f2 >> s2;
+        bool ok1 = false, ok2 = false;
+        if(f1 >> s1)ok1 = true;
+        if(f2 >> s2)ok2 = true;
+        if(!ok1 && !ok2)break;
+        if(ok1 != ok2)return false;
         if(s1 != s2)return false;
     }
     return true;

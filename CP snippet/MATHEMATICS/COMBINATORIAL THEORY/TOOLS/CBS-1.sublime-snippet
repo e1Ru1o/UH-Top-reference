@@ -185,6 +185,88 @@ struct COMBINATORIAL_SET
         return res;
     }
 
+    ll stirling1(ll n, ll k)
+    {
+        int k2 = n-k;
+        ll res = 0;
+        for(int i = 0 ; i <= 2*k2 ; i++)
+        {
+            int tot = 0;
+            for(int j = 0 ; j <= i ; j++)
+            {
+                if(i-j-k2 < 0)break;
+                if(j&1)tot = mod(tot - comb(i,j)*stirling1_dp(i-j,i-j-k2));
+                else tot = mod(tot + comb(i,j)*stirling1_dp(i-j,i-j-k2));
+            }
+            res = mod(res + tot*comb2(n,i));
+        }
+        return res;
+    }
+
+    vector<ll> stirling1_fast(ll n, ll k)
+    {
+        vector<ll> ans;
+        int k2 = n-k;
+        if(k2 < 0)return ans;
+        vector<ll> dp(k2+1);
+        vector<ll> iv(k2+1);
+        for(int i = 1 ; i <= k2 ; i++)iv[i] = inum(i);
+        dp[0] = 1;
+        ll pt = 0;
+        for(int i = __lg(n) ; i >= 0 ; i--)
+        {
+            vector<ll> big(k2+1), pw(k2+1), tmp(k2+1);
+            pw[0] = 1;
+            for(int j = 1 ; j <= k2 ; j++)pw[j] = (pt%MOD)*pw[j-1]%MOD;
+
+            int sz = min(k2,pt)+1;
+
+            vector<vector<ll>> ncr(sz,vector<ll>(sz));
+
+            for(int j = 0 ; j < sz ; j++)
+            {
+                ncr[j][0] = 1;
+                for(int l = 1 ; l < sz ; l++)
+                {
+                    ncr[j][l] = (pt-j-l+1)%MOD*ncr[j][l-1]%MOD*iv[l]%MOD;
+                }
+            }
+
+            for(int j = 0 ; j <= min(k2,pt) ; j++)
+            {
+                for(int l = 0 ; l <= j ; l++)
+                {
+                    big[j] = (big[j] + ncr[l][j-l]*pw[j-l]%MOD*dp[l])%MOD;
+                }
+            }
+
+            for(int j = 0 ; j <= k2 ; j++)
+            {
+                for(int l = 0 ; l <= j ; l++)
+                {
+                    tmp[j] = (tmp[j] + dp[l]*big[j-l])%MOD;
+                }
+            }
+
+            dp = tmp;
+            pt *= 2;
+
+            if(n&(1ll<<i))
+            {
+                tmp.assign(k2+1,0);
+                tmp[0] = 1;
+                for(int j = 1 ; j <= k2 ; j++)
+                {
+                    tmp[j] = (dp[j] + (pt%MOD)*dp[j-1])%MOD;
+                }
+                dp = tmp;
+                pt++;
+            }
+        }
+        ans = dp;
+        return ans;
+    }
+
     void update_stirling1(int n, int k)
     {
         int tn = _stirling1.size(), tk = _stirling1[0].size();
@@ -398,7 +480,7 @@ struct COMBINATORIAL_SET
         if(n < k)return 0;
         update(k);
         ll res = 1;
-        for(ll i = n ; i > n-k ; i--)res = res*i%MOD;
+        for(ll i = n ; i > n-k ; i--)res = i%MOD*res%MOD;
         return res*_ifact[k]%MOD;
     }
 };

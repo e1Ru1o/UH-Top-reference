@@ -167,6 +167,30 @@ __tvalue __get(__tkey key)
     __arr[hs].back().first = key;
     return __arr[hs].back().second;
 }
+void __delete(__tkey key)
+{
+    int hs = __hash(key);
+    for(int i = 0 ; i < __arr[hs].size() ; i++)
+    {
+        if(__arr[hs][i].first == key)
+        {
+            __arr[hs].erase(__arr[hs].begin()+i);
+            return;
+        }
+    }
+}
+bool __find(__tkey key)
+{
+    int hs = __hash(key);
+    for(int i = 0 ; i < __arr[hs].size() ; i++)
+    {
+        if(__arr[hs][i].first == key)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 struct __unordered_map
 {
     struct reference
@@ -186,6 +210,18 @@ struct __unordered_map
         reference rf;
         rf.key = key;
         return rf;
+    }
+    void insert(pair<__tkey,__tvalue> x)
+    {
+        __set(x.first, x.second);
+    }
+    bool find(__tkey x)
+    {
+        return __find(x);
+    }
+    void erase(__tkey x)
+    {
+        __delete(x);
     }
 };
 ]]></content>

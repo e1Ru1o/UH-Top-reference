@@ -25,11 +25,31 @@ struct SEGMENT_TREE
         lazy.push_back(false);
     }
 
+    SEGMENT_TREE()
+    {
+
+    }
+
     SEGMENT_TREE(ll a, ll b)
+    {
+        init(a,b);
+    }
+
+    void clear()
+    {
+        pt = 0;
+        ST.clear();
+        L.clear();
+        R.clear();
+        lazy.clear();
+        new_node();
+    }
+
+    void init(ll a, ll b)
     {
         assert(a <= b);
         Li = a, Ri = b;
-        new_node();
+        clear();
     }
 
     void build(vector<T> &vect)
@@ -47,7 +67,7 @@ struct SEGMENT_TREE
     bool binary_search_right(ll a, ll b, F f, T &tp)
     {
         query_res = T{};
-        query_flag = false;   
+        query_flag = false;
         bs_flag = false;
         ST_binary_search_right(0,Li,Ri,a,b,f);
         if(bs_flag)
@@ -66,7 +86,7 @@ struct SEGMENT_TREE
     bool binary_search_left(ll a, ll b, F f, T &tp)
     {
         query_res = T{};
-        query_flag = false;   
+        query_flag = false;
         bs_flag = false;
         ST_binary_search_left(0,Li,Ri,a,b,f);
         if(bs_flag)

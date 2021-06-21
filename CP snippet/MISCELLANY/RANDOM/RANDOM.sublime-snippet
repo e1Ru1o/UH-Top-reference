@@ -1,9 +1,15 @@
 <snippet>
 	<content><![CDATA[
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
-uniform_int_distribution<int>(0,1000000000)(rng);
-shuffle(vect.begin(),vect.end(),rng);
+typedef long long ll;
+mt19937_64 _rng(chrono::steady_clock::now().time_since_epoch().count());
+// mt19937 _rng(chrono::steady_clock::now().time_since_epoch().count());
+// uniform_int_distribution<datatype>(a,b)(_rng);
+// shuffle(vect.begin(),vect.end(),_rng);
+
+ll rng(ll a, ll b)
+{
+    return uniform_int_distribution<ll>(a,b)(_rng);
+}
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>random</tabTrigger>
